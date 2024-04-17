@@ -78,10 +78,9 @@ class Algoritm:
         self.cromozomi.pop()
         probabilitateIncrucisare = np.random.rand(self.nrCromozomi)
         participanti = [(index, cromozom) for index, (cromozom, prob) in enumerate(zip(self.cromozomi, probabilitateIncrucisare)) if prob < self.probIncrucisare]
-        # neparticipanti = [cromozom for cromozom, prob in zip(self.cromozomi, probabilitateIncrucisare) if prob >= self.probIncrucisare]
         neparticipanti = [(index, cromozom) for index, (cromozom, prob) in enumerate(zip(self.cromozomi, probabilitateIncrucisare)) if prob >= self.probIncrucisare]
         neparticipanti.append((19, elitist))
-        
+
         if Algoritm.enabled == True:
             Algoritm.outputFile.write("Probabilitatea de incrucisare " + str(self.probIncrucisare) + "\n")
             i = 0
