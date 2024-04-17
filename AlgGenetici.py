@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import math
+import copy
 
 class Algoritm:
     l = 0
@@ -55,8 +56,8 @@ class Algoritm:
             Algoritm.outputFile.write("\n" + "\n")
 
         u = np.random.uniform(low=0, high=1, size=self.nrCromozomi - 1) + np.finfo(float).eps
-        cromozomiSelectati = [self.cromozomi[np.searchsorted(probabilitati, ui)] for ui in u]
-        cromozomiSelectati.append(elitist)
+        cromozomiSelectati = [copy.deepcopy(self.cromozomi[np.searchsorted(probabilitati, ui)]) for ui in u]
+        cromozomiSelectati.append(copy.deepcopy(elitist))
 
         if Algoritm.enabled == True:
             Algoritm.outputFile.write("Cromozomi selectati\n")
