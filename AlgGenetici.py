@@ -78,9 +78,10 @@ class Algoritm:
         self.cromozomi.pop()
         probabilitateIncrucisare = np.random.rand(self.nrCromozomi)
         participanti = [(index, cromozom) for index, (cromozom, prob) in enumerate(zip(self.cromozomi, probabilitateIncrucisare)) if prob < self.probIncrucisare]
-        neparticipanti = [cromozom for cromozom, prob in zip(self.cromozomi, probabilitateIncrucisare) if prob >= self.probIncrucisare]
-        neparticipanti.append(elitist)
-
+        # neparticipanti = [cromozom for cromozom, prob in zip(self.cromozomi, probabilitateIncrucisare) if prob >= self.probIncrucisare]
+        neparticipanti = [(index, cromozom) for index, (cromozom, prob) in enumerate(zip(self.cromozomi, probabilitateIncrucisare)) if prob >= self.probIncrucisare]
+        neparticipanti.append((19, elitist))
+        
         if Algoritm.enabled == True:
             Algoritm.outputFile.write("Probabilitatea de incrucisare " + str(self.probIncrucisare) + "\n")
             i = 0
@@ -109,16 +110,18 @@ class Algoritm:
 
             participant1[1][2], participant2[1][2] = participant1[1][2][:punctRupere] + participant2[1][2][punctRupere:], participant2[1][2][:punctRupere] + participant1[1][2][punctRupere:]
 
-            neparticipanti.extend([participant1[1], participant2[1]])
+            neparticipanti.extend([(participant1[0],participant1[1]),(participant2[0], participant2[1])])
 
             if Algoritm.enabled == True:
                 Algoritm.outputFile.write("Rezultat: " + str(participant1[1][2]) + " " + str(participant2[1][2]) + "\n")
 
         else:
             if len(participanti) == 1:
-                neparticipanti.append(participanti[0][1])
+                neparticipanti.append((participanti[0][0],participanti[0][1]))
 
-        self.cromozomi = neparticipanti
+        neparticipanti.sort(key=lambda x: x[0])
+        neparticipantiCromozomi = [neparticipant[1] for neparticipant in neparticipanti]
+        self.cromozomi = neparticipantiCromozomi
         self.decodificare()
 
         if Algoritm.enabled == True:
@@ -150,7 +153,7 @@ class Algoritm:
             Algoritm.outputFile.write("Au fost modificati cromozomii:" + "\n")
 
             for iParticipant in iParticipanti:
-                Algoritm.outputFile.write(str(iParticipant) + "\n")
+                Algoritm.outputFile.write(str(iParticipant+1) + "\n")
 
             Algoritm.outputFile.write("\n")
             Algoritm.outputFile.write("Dupa mutatie:" + "\n")
